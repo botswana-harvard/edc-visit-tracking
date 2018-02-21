@@ -66,8 +66,8 @@ class PreviousVisitMixin(models.Model):
             time_point__lt=visit_definition.time_point,
             visit_tracking_content_type_map__app_label=self._meta.app_label,
             visit_tracking_content_type_map__module_name=self._meta.model_name,
-            grouping=visit_definition.grouping).order_by(
-                'time_point', 'base_interval').last()
+            instruction__in=['V1', 'V3']).order_by(
+                'time_point', 'base_interval', 'instruction').last()
         if previous_visit_definition:
             return previous_visit_definition
         return None
