@@ -11,6 +11,7 @@ from edc_visit_schedule.model_mixins import VisitScheduleModelMixin
 
 from ...choices import VISIT_REASON
 from ...constants import FOLLOW_UP_REASONS, REQUIRED_REASONS, NO_FOLLOW_UP_REASONS
+from ...constants import LOST_VISIT, COMPLETED_PROTOCOL_VISIT
 from ...constants import MISSED_VISIT, SCHEDULED, UNSCHEDULED
 from ...managers import VisitModelManager
 from ..previous_visit_model_mixin import PreviousVisitModelMixin
@@ -53,9 +54,9 @@ class VisitModelMixin(
         self.visit_code = self.appointment.visit_code
         self.visit_code_sequence = self.appointment.visit_code_sequence
 
-        if self.reason in [MISSED_VISIT, FAILED_ELIGIBILITY]:
+        if self.reason in [MISSED_VISIT, LOST_VISIT, FAILED_ELIGIBILITY]:
             self.require_crfs = NO
-        elif self.reason in [UNSCHEDULED, SCHEDULED]:
+        elif self.reason in [UNSCHEDULED, SCHEDULED, COMPLETED_PROTOCOL_VISIT]:
             self.require_crfs = YES
 
         super().save(*args, **kwargs)
